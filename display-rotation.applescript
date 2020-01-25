@@ -18,6 +18,25 @@ to changeRotationInWindow(theWindow)
 	end tell
 end changeRotationInWindow
 
+to confirm90DegreeRotation()
+	tell application "System Events"
+		tell process "System Preferences"
+			set attemptsLeft to 10
+			set done to false
+			repeat while attemptsLeft > 0 and not done
+				delay 2
+				repeat with theWindow in windows
+					if exists (button "Confirm" of sheet 1 of theWindow) then
+						click button "Confirm" of sheet 1 of theWindow
+						set done to true
+					end if
+				end repeat
+				set attemptsLeft to attemptsLeft - 1
+			end repeat
+		end tell
+	end tell
+end confirm90DegreeRotation
+
 tell application "System Preferences"
 	activate
 	set the current pane to pane id "com.apple.preference.displays"
@@ -27,3 +46,5 @@ delay 0.5
 
 changeRotationInWindow("LG HDR 4K (1)")
 changeRotationInWindow("LG HDR 4K (2)")
+delay 5
+confirm90DegreeRotation()
